@@ -4,8 +4,8 @@ Provides power to developer and tester to setup and test their application in is
 ```sh
 #how to run
 chmod 777 mvnw
-cd pas-control-mock/
-./mvnw package && java -jar target/pas-cc-mock-0.1.0.jar
+cd mock/
+./mvnw package && java -jar target/mock-0.1.0.jar
 
 #package and create docker image
 mvn clean
@@ -14,7 +14,7 @@ mvn clean
 
 #list docker images and run
 docker images
-docker run -p 8080:8083 -t shl/pas-cc-mock
+docker run -p 8080:8083 -t shl/mock
 ```
 
 Docker has a simple Dockerfile file format that it uses to specify the "layers" of an image. So let’s go ahead and create a Dockerfile in our Spring Boot project:
@@ -63,7 +63,7 @@ In the Maven pom.xml you should add a new plugin like this (see the plugin docum
 ```
 **The configuration specifies 3 things:**
 > The repository with the image name, which will end up here as
-> shl/pas-cc-mock
+> shl/mock
 > The name of the jar file, exposing the Maven configuration as a build argument for docker.
 
 Optionally, the image tag, which ends up as latest if not specified. It can be set to the artifact id if desired.
