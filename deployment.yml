@@ -1,0 +1,13 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: mock
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - name: master
+        image: k8s.gcr.io/mock
+        ports:
+        - containerPort: 8083

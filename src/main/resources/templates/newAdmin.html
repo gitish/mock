@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<title>PAS big CC Service</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+.h1 {
+	margin-top: 2px;
+    margin-bottom: 10px;
+}
+.rcorners3 {
+	border-radius: 25px;
+	background: #cccccc;
+	padding: 10px;
+	margin-left: 20px;
+	width: 500px;
+	height: 120px;
+	float: left;
+}
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 2;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.sw{
+	width:200px;
+	background-color:#f5f5f5;
+	float:left;
+}
+
+.chkBox{
+	width: 30px;
+    height: 20px;
+}
+.btn-success {
+	margin-top: 10px;
+	text-align: center;
+}
+</style>
+<script>
+	$(function() {
+		$(".btn.btn-primary").click(function(e){
+			var dvName = $(this).attr("data-dvName");
+			var data = $('#'+dvName).html();
+			$('#dvTitle').html($('#'+dvName).attr('title'));
+			$('#dvDataType').html($(this).attr('datatype'));
+			$('#txtInput').val(data);
+
+		});
+		$("#txtInput").val($("#dvText").val());
+		$(".widget input[type=submit], .widget a, .widget button").button();
+		$("#btnSave").click(function(event) {
+			var inputData=$("#txtInput").val();
+			if(""==inputData){
+				alert("not valid input");
+				return;
+			}
+			$.ajax({
+				url : '/submit',
+				data : {
+					'key' : $('#dvDataType').html(),
+					'input' : $("#txtInput").val()
+				},
+				success : function(result) {
+					console.log("Saved!!");
+					location.reload();
+				}
+			});
+		});
+		$(".chkService").change(function(){
+			var value=$(this).is(':checked');
+			$.ajax({
+				url : '/service',
+				data : {
+					'key' : $(this).val(),
+					'input' : value
+				},
+				success : function(result) {
+					console.log("Saved!!");
+				}
+			});
+
+		});
+	});
+</script>
+</head>
+<body>
+	<div class="container">
+		<h4>Blue button to Get and Green button to set the value</h4>
+		<div class="btn-group-vertical">
+			<button type="button" class="btn btn-primary" data-dvName="dvUser" dataType="USER">User</button>
+			<button type="button" class="btn btn-primary" data-dvName="dvSubs" dataType="SUBS">Subscription</button>
+		</div>
+		<div class="btn-group-vertical" style="width:80%">
+			<div id="dvTitle">Values</div>
+			<textarea rows="15" cols="108" id="txtInput" style="margin: 0px; height: 129px; width: 755px;"></textarea>
+			<button type="button" class="btn btn-success" id="btnSave">Save</button>
+		</div>
+	</div>
+
+	<div hidden="hidden" id="dvDataType"></div>
+	<div class="panel-body" hidden="hidden" id="dvUser" title="userId,FName,LName,PostCode,M.No,Email" th:utext="${user}"></div>
+	<div class="panel-body" hidden="hidden" id="dvSubs" title="subId,UserID,Subscription" th:utext="${subs}"></div>
+</body>
+</html>

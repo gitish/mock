@@ -1,0 +1,3 @@
+application:
+    name:cc-mock
+    server.port:8080
