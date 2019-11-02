@@ -2,15 +2,11 @@ Provides power to developer and tester to setup and test their application in is
 ## Containerize Mock Service
 ### Run Steps
 ```sh
-#how to run
-chmod 777 mvnw
+#how to create Image
 cd mock/
-./mvnw package && java -jar target/mock-0.1.0.jar
-
-#package and create docker image
-mvn clean
-./mvnw package
-./mvnw install dockerfile:build
+mvn clean install
+docker build -t k8s.gcr.io/sh-mock .
+```
 
 #list docker images and run
 docker images
@@ -24,8 +20,7 @@ Docker has a simple Dockerfile file format that it uses to specify the "layers" 
 ```docker
 FROM openjdk:8-jdk-alpine
 VOLUME /tmp
-ARG JAR_FILE
-COPY ${JAR_FILE} app.jar
+COPY target/mock.0.1.0-SNAPSHOTS.jar app.jar
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
 ```
 
@@ -39,7 +34,8 @@ To build the image you can use some tooling for Maven or Gradle from the communi
 Build a Docker Image with Maven
 In the Maven pom.xml you should add a new plugin like this (see the plugin documentation for more options): :
 
-### pom.xml
+### You can add below plugin in pom.xml to generate images
+
 
 ```xml
 <properties>
